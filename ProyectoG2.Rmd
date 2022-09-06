@@ -1,0 +1,363 @@
+---
+title: "Proyecto Estadística"
+author: Joshua Alexander Cobos Valle, Michael Anthony Castro Empuño, Kenneth Jair Saa Tomala, Armando Javier Moreira Salvatierra
+date: "\today"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 2
+  word_document:
+    toc: yes
+    toc_depth: '2'
+  pdf_document:
+    toc: yes
+    toc_depth: 2
+csl: apa.csl
+linkcolor: blue
+urlcolor: blue
+subtitle: Estudio de relación entre calidad de vida del estudiante y su rendimiento
+  académico
+lang: es-ES
+---
+
+\pagebreak
+
+# 1. Introducción
+El rendimiento de los estudiantes 
+
+## 1.1 Objetivo General
+Hallar la variable que más se ajuste al comportamiento de los promedios de los estudiante
+
+## 1.2 Objetivos Específicos
+1. Analizar cada variable y contrastar este análisis con el rendimiento educativo
+2. Elaborar 
+3. Determinar 
+
+# 2. Variables de estudio
+
+## 2.1 Variables Cualitativas
+* Sexo
+* Realiza actividad física
+* Cantidad de materias promedio por término
+* Comidas diarias
+
+## 2.2 Variables Cuantitativas 
+* Promedio
+* Carbohidratos por comida
+* Peso en Kg
+* Cantidad de horas de sueño
+* Consumo de agua promedio semanal en litros
+
+# 3. Estadística univariante descriptiva
+Extracción de datos
+```{r data}
+data <- read.csv(url("https://raw.githubusercontent.com/ArmandoMoreiraS/Estadistica/patch-1/Base2DatosEstudiantes.csv"),encoding = "UTF-8")
+
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}
+'install.packages("readxl")
+install.packages("dplyr")
+install.packages("fdth")
+install.packages("ggcorrplot")
+install.packages("moments")
+install.packages("GGally")
+install.packages("nortest")
+install.packages("plotly")
+# Carga de librerias.
+library("dplyr")          #Dataframes management
+library("fdth")              #Tablas de frec, hist y poligonos
+library("ggcorrplot")    #Correlation matrix on ggplot2
+library("moments")        #Kurtosis
+library("GGally")          #Mas funciones para ggplot2
+library("nortest")        #Tests de normalidad
+library("ggplot2")        #Graficos
+library("plotly") '
+```
+
+
+## Sexo
+
+```{r}
+x <- table (data$Sexo)
+barplot(x, xlab = "Sexo", ylab = "Frecuencia", col = c("pink","blue"), main = "Diagrama de Frecuencias Sexo de los Estudiantes")
+
+
+```
+
+
+## Actividad física
+
+```{r}
+actFisica <- data$Realiza_ejercicio
+x <- table (data$Realiza_ejercicio)
+barplot(x, xlab = "Actividad fisica", ylab = "Frecuencia", main = "Diagrama de Frecuencias Actividad fisica")
+
+
+
+```
+
+
+
+## Cantidad de materias promedio por término
+
+```{r}
+cantMaterias <- data$Materias_Promedio_x_Termino
+x <- table (data$Materias_Promedio_x_Termino)
+barplot(x, xlab = "Cantidad de materias", ylab = "Frecuencia", col = c("green","blue","yellow"), main = "Diagrama de Frecuencias de Cantidad de materias")
+
+
+
+```
+
+## Comidas diarias
+```{r}
+x <- table (data$Numero_comidas_diarias)
+barplot(x, xlab = "Comidas diarias", ylab = "Frecuencia", main = "Diagrama de Frecuencias Comidas diarias")
+```
+
+## Promedio
+```{r}
+library(moments)
+library(fdth)
+promedio <- data$Promedio
+hist(promedio)
+boxplot(promedio)
+sd(promedio)
+quantile(promedio,0.25)
+quantile(promedio,0.75)
+tb1=data.frame(mean(promedio),median(promedio),median(promedio),sd(promedio),quantile(promedio,0.25),quantile(promedio,0.75))
+tb1 =(tb1)
+View(tb1)
+summary(data$Promedio)
+kurtosis(data$Promedio)
+skewness(data$Promedio)
+
+promedio1 <- fdt(data$Promedio,breaks=c('Sturges'),right=FALSE,na.rm=FALSE)
+promedio_table <- promedio1$table
+```
+
+
+## Carbohidratos por comida
+
+```{r}
+carbohidratosPorComida <- data$Porcentaje_promedio_carbohidrato_por_comida
+hist(carbohidratosPorComida)
+boxplot(data$Porcentaje_promedio_carbohidrato_por_comida,horizontal = T,main="Diagrama de carbohidratos por comida")
+tb2=data.frame(mean(carbohidratosPorComida),median(carbohidratosPorComida),median(carbohidratosPorComida),sd(carbohidratosPorComida),quantile(carbohidratosPorComida,0.25),quantile(carbohidratosPorComida,0.75))
+summary(carbohidratosPorComida)
+
+
+
+
+```
+
+
+## Peso en Kg
+```{r}
+peso <- data$Peso
+hist(peso)
+boxplot(data$Peso,horizontal = T,main="Diagrama de peso en Kg")
+tb4=data.frame(mean(peso),median(peso),median(peso),sd(peso),quantile(peso,0.25),quantile(peso,0.75))
+tb4
+```
+
+
+## Cantidad de horas de sueño
+
+```{r}
+cHrsSueno <- data$Horas_promedio_diarias_sueño
+hist(cHrsSueno)
+boxplot(data$Horas_promedio_diarias_sueño,horizontal = T,main="Diagrama de cantidad de horas de sueño")
+```
+
+
+## Consumo de agua promedio semanal en litros
+
+```{r}
+consumoAgua <- data$Consumo_promedio_semanal_agua
+hist(consumoAgua)
+boxplot(data$Consumo_promedio_semanal_agua,horizontal = T,main="Diagrama de consumo de agua")
+tb5=data.frame(mean(consumoAgua),median(consumoAgua),median(consumoAgua),sd(consumoAgua),quantile(consumoAgua,0.25),quantile(consumoAgua,0.75))
+```
+
+
+
+
+
+
+
+
+
+# 4. Estadística bivariante
+Comparación de promedios por sexo mediante diagrama de caja
+```{r}
+boxplot(data$Promedio ~ data$Sexo, title = "Comparación de promedio por sexo", horizontal=T)
+
+```
+Comparación de promedios por actividad física mediante diagrama de cajas
+```{r}
+boxplot(data$Promedio ~ data$Realiza_ejercicio, horizontal=T)
+
+```
+Comparación de promedios por cantidad de materias mediante diagrama de cajas
+```{r}
+boxplot(data$Promedio ~ data$Materias_Promedio_x_Termino, horizontal=T)
+
+```
+Comparación de promedios por comidas diarias mediante diagrama de cajas
+```{r}
+boxplot(data$Promedio ~ data$Numero_comidas_diarias, horizontal=T)
+
+```
+
+Matriz de correlación Promedio y Carbohidratos por comida
+```{r}
+library(corrplot)
+dtPromedio_Carbohidratos <- data.frame(data$Promedio,data$Porcentaje_promedio_carbohidrato_por_comida)
+colnames(dtPromedio_Carbohidratos) <- c("Promedio","Carbohidratos por comida")
+corrplot(cor(dtPromedio_Carbohidratos),method = 'square',tl.cex = 0.7)
+pairs(dtPromedio_Carbohidratos)
+```
+
+Matriz de correlación Promedio y Peso
+```{r}
+library(corrplot)
+dtPromedio_Peso <- data.frame(data$Promedio,data$Peso)
+colnames(dtPromedio_Peso) <- c("Promedio","Peso Kg")
+corrplot(cor(dtPromedio_Peso),method = 'square',tl.cex = 0.7)
+pairs(dtPromedio_Peso)
+```
+Matriz de correlación Promedio y Horas de sueño
+```{r}
+library(corrplot)
+dtPromedio_Sueno <- data.frame(data$Promedio,data$Horas_promedio_diarias_sueño)
+colnames(dtPromedio_Sueno) <- c("Promedio","Horas de sueño")
+corrplot(cor(dtPromedio_Sueno),method = 'square',tl.cex = 0.7)
+pairs(dtPromedio_Sueno)
+```
+Matriz de correlación Promedio y Consumo de agua en litros
+```{r}
+library(corrplot)
+dtPromedio_Agua <- data.frame(data$Promedio,data$Consumo_promedio_semanal_agua)
+colnames(dtPromedio_Agua) <- c("Promedio","Consumo agua")
+corrplot(cor(dtPromedio_Agua),method = 'square',tl.cex = 0.7)
+pairs(dtPromedio_Agua)
+```
+# 5. Estadística Infferencial
+## 5.1 Intervalos de confianza
+1. Media Promedio
+```{r}
+t.test(x=data$Promedio, conf.level=0.90)$conf.int
+```
+
+2. Media Carbohidratos por comida
+```{r}
+t.test(x=data$Porcentaje_promedio_carbohidrato_por_comida, conf.level=0.90)$conf.int
+```
+3. Media Peso en Kg
+```{r}
+t.test(x=data$Peso, conf.level=0.90)$conf.int
+```
+4. Media cantidad de horas de sueño
+```{r}
+t.test(x=data$Horas_promedio_diarias_sueño, conf.level=0.90)$conf.int
+```
+5. Media Consumo de agua promedio semanal en litros
+```{r}
+t.test(x=data$Consumo_promedio_semanal_agua, conf.level=0.90)$conf.int
+```
+
+## 5.2 Pruebas de hipótesis
+* Prueba de diferencia de medias para promedios por sexo 
+¿El promedio obtenido por mujeres es mayor que el promedio obtenido por hombres?
+Ho: m1 < m2
+Ha: ¬Ho
+```{r}
+dtF<-data.frame(data$Promedio,data$Sexo)
+pF = dtF[data$Sexo=="F",1]
+pM = dtF[data$Sexo=="M",1]
+m1 <- mean(pF)
+m2 <- mean(pM)
+n1 <- length(pF)
+n2 <- length(pM)
+var1 <- var(pF)
+var2 <- var(pM)
+
+Zp = (m1-m2)/sqrt((var1/n1)+(var2/n2))
+Zp
+Zalpha=qnorm(0.05, lower.tail = F)
+#Region de Rechazo:
+# Zp > Z(alpha)
+(Zp>Zalpha) | (Zp<(-Zalpha))
+```
+(No rechaza Ho)
+
+* Prueba de difenrencia de medias para promedios por actividad física
+¿El promedio obtenido por estudiantes que realizan actividad física es mayor que el promedio obtenido por estudiantes que no realizan actividad física?
+Ho: m1 < m2
+Ha: ¬Ho
+```{r}
+dtF<-data.frame(data$Promedio,data$Realiza_ejercicio)
+paf1 = dtF[data$Realiza_ejercicio=="1",1]
+paf2 = dtF[data$Realiza_ejercicio=="2",1]
+m1 <- mean(paf1)
+m2 <- mean(paf2)
+n1 <- length(paf1)
+n2 <- length(paf2)
+var1 <- var(paf1)
+var2 <- var(paf2)
+
+Zp = (m1-m2)/sqrt((var1/n1)+(var2/n2))
+Zp
+Zalpha=qnorm(0.05, lower.tail = F)
+#Region de Rechazo:
+# Zp > Z(alpha)
+(Zp>Zalpha) | (Zp<(-Zalpha))
+```
+(Rechaza Ho)
+
+
+* Prueba de difenrencia de medias para promedios por cantidad de comidas (3 y 5)
+¿El promedio obtenido por estudiantes que tienen 3 comidas diarias es menor que el promedio obtenido por estudiantes que tienen 5 comidas diarias?
+Ho: m1 > m2
+Ha: ¬Ho
+```{r}
+dtF<-data.frame(data$Promedio,data$Numero_comidas_diarias)
+p3c = dtF[data$Numero_comidas_diarias=="3",1]
+p5c = dtF[data$Numero_comidas_diarias=="5",1]
+m1 <- mean(p3c)
+m2 <- mean(p5c)
+n1 <- length(p3c)
+n2 <- length(p5c)
+var1 <- var(p3c)
+var2 <- var(p5c)
+
+Zp = (m1-m2)/sqrt((var1/n1)+(var2/n2))
+Zp
+Zalpha=qnorm(0.05, lower.tail = F)
+#Region de Rechazo:
+# Zp > Z(alpha)
+(Zp>Zalpha) | (Zp<(-Zalpha))
+```
+(Rechaza Ho)
+## 5.3 Bondad de ajuste
+
+# 6. Regresión lineal
+
+```{r}
+cor.test(data$Promedio,data$Porcentaje_promedio_carbohidrato_por_comida)
+rl=lm(data$Promedio~data$Porcentaje_promedio_carbohidrato_por_comida)
+summary(rl)
+```
+
+
+1 si 2 no
+
+
+
+
+
+
